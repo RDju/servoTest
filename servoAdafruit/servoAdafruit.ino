@@ -6,16 +6,19 @@
 #include <Ethernet.h>
 #include <Z_OSC.h>
 
+// called this way, it uses the default address 0x40
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
+
+/************OSC*************/
 byte myMac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 byte myIp[]  = { 192, 168, 144, 210 };
 int  myPort  = 9000;
 
 Z_OSCServer server;
 Z_OSCMessage *rcvMes;
+/*****************************/
 
-// called this way, it uses the default address 0x40
-Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
-
+/***********Servos**********/
 #define FUTABAMIN  195 
 #define FUTABAMAX  534 
 
@@ -33,6 +36,15 @@ typedef struct servo{
 } servo;
 
 servo myservos[16];
+
+/********************************/
+
+#define expressionPin 0
+uint16_t loopCount;
+uint16_t expPedalValues[50];
+boolean isListeningPedal;
+int32_t exprPin = 0; //Servo controlé par la pédale
+uint16_t prevExprValue = 0; //pour ne pas lire les valeurs quand la pédale ne bouge pas (mettre la pédale au max pour que ça fonctionne)
 
 void setup() {
   Serial.begin(9600);
@@ -53,6 +65,8 @@ void setup() {
 }
 
 void loop() {
+  
+  updateExpressionPedal();
   
   //Test 1 :
   // Gestion via OSC avec le programme pure data
@@ -77,6 +91,8 @@ void loop() {
       myservos[servonum].valmax = rcvMes->getInteger32(2);
       
       Serial.print("Fixation des extremites servo ");Serial.print(servonum);Serial.print(" : "); Serial.print(myservos[servonum].valmin);Serial.print(" "); Serial.println(myservos[servonum].valmax);
+    } else if (!strcmp(rcvMes->getZ_OSCAddress(), "/EXPR")){
+      exprPin = rcvMes->getInteger32(0);
     }
   }
   
@@ -91,4 +107,37 @@ void loop() {
   delay(45);
   pwm.setPWM(3, decalage, FUTABAMAX+decalage);
   delay(1000);*/
+}
+
+
+void doExpressionPedal(uint16_t expVal){
+  myservos[exprPin].currvalue = map(expVal, 0, 937, myservos[exprPin].valmin, myservos[exprPin].valmax);
+  pwm.setPWM(servonum, 0, myservos[servonum].currvalue);
+}
+
+void updateExpressionPedal(){
+  
+  uint16_t expValOK;  
+  uint16_t expVal = analogRead(expressionPin);
+
+  if(loopCount == 29){
+    expPedalValues[loopCount] = expVal;
+    expValOK = abs(expPedalValues[loopCount] - expPedalValues[0]);
+    loopCount = 0;
+  }
+  if(loopCount < 29){
+    expPedalValues[loopCount] = expVal;
+    expValOK = abs(expPedalValues[loopCount] - expPedalValues[loopCount + 1]);
+    loopCount ++ ;
+  }
+
+  if(!isListeningPedal){
+    if(expValOK > 3)
+        isListeningPedal = true;
+  }
+  
+  if(isListeningPedal  && (expVal != prevExprValue))
+     doExpressionPedal(expVal);
+     
+   prevExprValue = expVal;
 }

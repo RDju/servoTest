@@ -21,7 +21,7 @@
 #X msg 367 41 \$1;
 #X obj 365 75 s canalInit;
 #X obj 160 153 nbx 1 30 0 15 0 0 empty empty empty 0 -8 0 20 -262144
--1 -1 1 256;
+-1 -1 0 256;
 #X obj 85 421 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X floatatom 78 6 5 135 195 0 - - -;
@@ -130,7 +130,7 @@
 #X coords 50 50 100 1000 200 110 2 40 -40;
 #X restore 234 -87 pd init;
 #X text 231 -107 Init;
-#N canvas 1116 217 784 587 simple 0;
+#N canvas 333 316 246 202 simple 0;
 #X obj 8 4 nbx 2 30 0 15 0 0 empty empty empty 0 -8 0 20 -262144 -1
 -1 0 256;
 #X obj 9 84 pack i i;
@@ -149,9 +149,9 @@
 #X text 258 50 Control one servo;
 #N canvas 701 259 450 300 global 0;
 #X obj 24 10 hsl 128 15 0 600 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 0 1;
+-1 -1 12700 1;
 #X obj 24 36 hsl 128 15 0 600 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 0 1;
+-1 -1 11900 1;
 #X text 7 9 0;
 #X text 7 35 1;
 #X obj 196 151 s OSC;
@@ -185,6 +185,16 @@
 #X restore 234 165 pd global;
 #X text 245 141 Control the 2 servos;
 #X obj 55 -87 loadbang;
+#N canvas 1002 204 450 300 expr 0;
+#X obj 93 200 s OSC;
+#X msg 93 174 sendtyped /EXPR i \$1;
+#X obj 128 125 nbx 2 14 0 15 0 0 empty empty empty 0 -8 0 10 -262144
+-1 -1 0 256;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X coords 0 -1 1 1 85 60 2 100 100;
+#X restore 102 147 pd expr;
+#X text 102 128 Expr pin;
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
 #X connect 4 0 1 0;

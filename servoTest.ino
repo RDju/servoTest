@@ -10,7 +10,8 @@ int delayTime = 750;
  
 //#define DGS //dead
 #define ALIGN
-#define FUTABA
+//#define FUTABA
+
 void setup() 
 { 
   Serial.begin(9600);
