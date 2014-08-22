@@ -1,0 +1,194 @@
+#N canvas 316 140 510 426 10;
+#X declare -lib mrpeach;
+#X obj 10 -121 import mrpeach;
+#X obj 9 27 udpsend;
+#X msg 22 -10 disconnect;
+#X floatatom 9 57 5 0 0 0 - - -;
+#X obj 9 -52 packOSC;
+#X msg 16 -31 connect 192.168.144.210 9000;
+#X obj 9 -84 r OSC;
+#N canvas 328 149 1125 823 init 0;
+#X msg 410 -20 Futaba;
+#X msg -9 -68 Align;
+#X obj -18 43 s servoInit;
+#X obj 412 7 s servoInit;
+#X obj 77 -12 nbx 2 14 0 15 0 0 empty empty empty 0 -8 0 10 -262144
+-1 -1 0 256;
+#X obj 164 -12 nbx 2 14 0 15 0 0 empty empty empty 0 -8 0 10 -262144
+-1 -1 1 256;
+#X msg 10 105 \$1;
+#X obj 59 154 s canalInit;
+#X msg 367 41 \$1;
+#X obj 365 75 s canalInit;
+#X obj 160 153 nbx 1 30 0 15 0 0 empty empty empty 0 -8 0 20 -262144
+-1 -1 1 256;
+#X obj 85 421 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X floatatom 78 6 5 135 195 0 - - -;
+#X floatatom 78 27 5 425 475 0 - - -;
+#X floatatom 165 7 5 135 285 0 - - -;
+#X floatatom 166 28 5 425 475 0 - - -;
+#X obj 220 151 route Align Futaba;
+#X obj 237 176 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 282 173 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 83 456 pack i i i i;
+#X msg 83 488 sendtyped /REF iii \$2 \$3 \$4;
+#X obj 83 514 s OSC;
+#X obj 220 120 r servoInit;
+#X obj 123 123 r canalInit;
+#X text 211 9 min;
+#X text 213 33 max;
+#X text 209 -14 port;
+#X obj 86 51 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 174 51 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 73 -34 Align;
+#X text 156 -34 Futaba;
+#X obj 55 22 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 133 21 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 8 -33 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 318 -2 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 82 204 delay 10;
+#X msg 374 241 158;
+#X msg 377 263 446;
+#X msg 415 241 159;
+#X msg 416 263 440;
+#X obj 55 42 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 133 41 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 371 312 192;
+#X msg 374 334 535;
+#X msg 413 334 534;
+#X obj 301 -51 loadbang;
+#X text 133 40 60Hz;
+#X text 133 20 50Hz;
+#X msg 413 312 195;
+#X msg 247 -57 1;
+#X obj 287 -20 delay 100;
+#X connect 0 0 3 0;
+#X connect 0 0 34 0;
+#X connect 1 0 2 0;
+#X connect 1 0 33 0;
+#X connect 4 0 6 0;
+#X connect 5 0 8 0;
+#X connect 6 0 7 0;
+#X connect 8 0 9 0;
+#X connect 10 0 19 1;
+#X connect 11 0 19 0;
+#X connect 12 0 19 2;
+#X connect 13 0 19 3;
+#X connect 14 0 19 2;
+#X connect 15 0 19 3;
+#X connect 16 0 12 0;
+#X connect 16 0 13 0;
+#X connect 16 0 17 0;
+#X connect 16 1 15 0;
+#X connect 16 1 14 0;
+#X connect 16 1 18 0;
+#X connect 19 0 20 0;
+#X connect 20 0 21 0;
+#X connect 22 0 16 0;
+#X connect 23 0 10 0;
+#X connect 27 0 1 0;
+#X connect 27 0 35 0;
+#X connect 28 0 0 0;
+#X connect 28 0 35 0;
+#X connect 31 0 36 0;
+#X connect 31 0 37 0;
+#X connect 32 0 38 0;
+#X connect 32 0 39 0;
+#X connect 33 0 4 0;
+#X connect 34 0 5 0;
+#X connect 35 0 11 0;
+#X connect 36 0 12 0;
+#X connect 37 0 13 0;
+#X connect 38 0 14 0;
+#X connect 39 0 15 0;
+#X connect 40 0 42 0;
+#X connect 40 0 43 0;
+#X connect 41 0 48 0;
+#X connect 41 0 44 0;
+#X connect 42 0 12 0;
+#X connect 43 0 13 0;
+#X connect 44 0 15 0;
+#X connect 45 0 49 0;
+#X connect 45 0 40 0;
+#X connect 45 0 41 0;
+#X connect 45 0 27 0;
+#X connect 45 0 50 0;
+#X connect 48 0 14 0;
+#X connect 49 0 5 0;
+#X connect 50 0 28 0;
+#X coords 50 50 100 1000 200 110 2 40 -40;
+#X restore 234 -87 pd init;
+#X text 231 -107 Init;
+#N canvas 1116 217 784 587 simple 0;
+#X obj 8 4 nbx 2 30 0 15 0 0 empty empty empty 0 -8 0 20 -262144 -1
+-1 0 256;
+#X obj 9 84 pack i i;
+#X msg 7 113 sendtyped /POS ii \$1 \$2;
+#X obj 8 137 s OSC;
+#X obj 11 39 hsl 128 15 0 600 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X floatatom 148 39 5 0 600 0 - - -;
+#X connect 0 0 1 1;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 4 0 5 0;
+#X connect 5 0 1 0;
+#X coords 0 -1 1 1 190 60 2 0 0;
+#X restore 239 68 pd simple change;
+#X text 258 50 Control one servo;
+#N canvas 701 259 450 300 global 0;
+#X obj 24 10 hsl 128 15 0 600 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 24 36 hsl 128 15 0 600 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X text 7 9 0;
+#X text 7 35 1;
+#X obj 196 151 s OSC;
+#X msg 231 13 sendtyped /POS ii \$1 0;
+#X msg 231 38 sendtyped /POS ii \$1 1;
+#X floatatom 161 10 5 0 600 0 - - -;
+#X floatatom 161 36 5 0 600 0 - - -;
+#X obj 24 82 hsl 128 15 0 600 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X floatatom 161 82 5 0 600 0 - - -;
+#X obj 24 59 hsl 128 15 0 600 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X floatatom 161 59 5 0 600 0 - - -;
+#X msg 231 62 sendtyped /POS ii \$1 2;
+#X msg 231 85 sendtyped /POS ii \$1 3;
+#X text 6 80 3;
+#X text 6 58 2;
+#X connect 0 0 7 0;
+#X connect 1 0 8 0;
+#X connect 5 0 4 0;
+#X connect 6 0 4 0;
+#X connect 7 0 5 0;
+#X connect 8 0 6 0;
+#X connect 9 0 10 0;
+#X connect 10 0 14 0;
+#X connect 11 0 12 0;
+#X connect 12 0 13 0;
+#X connect 13 0 4 0;
+#X connect 14 0 4 0;
+#X coords 0 -1 1 1 200 110 2 0 0;
+#X restore 234 165 pd global;
+#X text 245 141 Control the 2 servos;
+#X obj 55 -87 loadbang;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 4 0;
+#X connect 13 0 5 0;
+#X coords 0 0 1 1 85 60 0;

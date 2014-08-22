@@ -6,12 +6,15 @@ Servo myservo;  // create servo object to control a servo
 int pos = 0;    // variable to store the servo position 
 int freqMin, freqMax, freqMiddle;
 int delayMov; //temps nécessaire pour que le servo se déplace de min à max
+int delayTime = 750;
  
+//#define DGS //dead
+#define ALIGN
+#define FUTABA
 void setup() 
 { 
   Serial.begin(9600);
   
- // A définir dans Servo.h (à remplacer dans la bibli servo) ligne 50
  #ifdef DGS
   freqMin = 500;
   freqMax = 2290;
@@ -19,7 +22,7 @@ void setup()
  #elif defined(ALIGN)
   freqMin = 780;
   freqMax = 2180;
-  delayMov = 180;
+  delayMov = 300;//180;
  #elif defined(FUTABA)
   freqMin = 776;
   freqMax = 2177;
@@ -27,7 +30,7 @@ void setup()
  #endif
  
  freqMiddle = ( freqMin + freqMax ) / 2 ; 
- myservo.attach(10, freqMin, freqMax);
+ myservo.attach(5, freqMin, freqMax);
 } 
  
  
@@ -37,24 +40,23 @@ void loop()
   //Test 1 : 
   //Switch entre le minimum, le milieu et le maximum
   /*sendAFreq(freqMin);
-  delay(3000);
+  delay(delayTime);
   sendAFreq(freqMiddle);
-  delay(3000);
+  delay(delayTime);
   sendAFreq(freqMax);
-  delay(3000);
+  delay(delayTime);
   sendAFreq(freqMiddle);
-  delay(3000);*/
-  
+  delay(delayTime);*/
   
   //Test 2 : 
   //Balaye l'ensemble des positions possibles
   /*for(pos = freqMin; pos < freqMax; pos += 10){
     myservo.writeMicroseconds(pos); 
-    delay(10);
+    delay(1000);
   } 
   for(pos = freqMax; pos>freqMin; pos-=10){                                
     myservo.writeMicroseconds(pos);
-    delay(10);
+    delay(1000);
   }*/
 } 
 
