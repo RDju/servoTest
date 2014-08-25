@@ -1,4 +1,4 @@
-#N canvas 316 140 510 426 10;
+#N canvas 411 76 510 426 10;
 #X declare -lib mrpeach;
 #X obj 10 -121 import mrpeach;
 #X obj 9 27 udpsend;
@@ -130,7 +130,7 @@
 #X coords 50 50 100 1000 200 110 2 40 -40;
 #X restore 234 -87 pd init;
 #X text 231 -107 Init;
-#N canvas 333 316 246 202 simple 0;
+#N canvas 412 450 246 178 simple 0;
 #X obj 8 4 nbx 2 30 0 15 0 0 empty empty empty 0 -8 0 20 -262144 -1
 -1 0 256;
 #X obj 9 84 pack i i;
@@ -149,9 +149,9 @@
 #X text 258 50 Control one servo;
 #N canvas 701 259 450 300 global 0;
 #X obj 24 10 hsl 128 15 0 600 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 12700 1;
+-1 -1 12600 1;
 #X obj 24 36 hsl 128 15 0 600 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 11900 1;
+-1 -1 0 1;
 #X text 7 9 0;
 #X text 7 35 1;
 #X obj 196 151 s OSC;
@@ -184,17 +184,47 @@
 #X coords 0 -1 1 1 200 110 2 0 0;
 #X restore 234 165 pd global;
 #X text 245 141 Control the 2 servos;
-#X obj 55 -87 loadbang;
-#N canvas 1002 204 450 300 expr 0;
-#X obj 93 200 s OSC;
-#X msg 93 174 sendtyped /EXPR i \$1;
-#X obj 128 125 nbx 2 14 0 15 0 0 empty empty empty 0 -8 0 10 -262144
+#X obj 70 -88 loadbang;
+#N canvas 783 366 450 298 expr 0;
+#X obj 93 224 s OSC;
+#X msg 93 190 sendtyped /EXPR i \$1;
+#X obj 128 157 nbx 2 14 0 15 0 0 empty empty empty 0 -8 0 10 -262144
 -1 -1 0 256;
+#X obj 116 122 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 152 122 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 113 100 min;
+#X text 148 100 max;
+#X text 106 139 Servo number;
+#X msg 231 147 sendtyped /MAX i 1;
+#X msg 231 122 sendtyped /MIN i 1;
 #X connect 1 0 0 0;
 #X connect 2 0 1 0;
-#X coords 0 -1 1 1 85 60 2 100 100;
+#X connect 3 0 9 0;
+#X connect 4 0 8 0;
+#X connect 8 0 0 0;
+#X connect 9 0 0 0;
+#X coords 0 -1 1 1 85 80 2 100 100;
 #X restore 102 147 pd expr;
-#X text 102 128 Expr pin;
+#X text 102 128 Expr pedal;
+#N canvas 812 100 450 300 mode 0;
+#X obj 113 122 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 155 122 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 146 102 pedal;
+#X text 103 103 Slider;
+#X obj 206 162 s OSC;
+#X msg 206 128 sendtyped /MODE i 1;
+#X msg 206 103 sendtyped /MODE i 0;
+#X connect 0 0 6 0;
+#X connect 1 0 5 0;
+#X connect 5 0 4 0;
+#X connect 6 0 4 0;
+#X coords 0 -1 1 1 85 50 2 100 100;
+#X restore 102 52 pd mode;
+#X text 101 34 Control mode;
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
 #X connect 4 0 1 0;

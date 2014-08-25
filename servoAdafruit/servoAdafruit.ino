@@ -45,6 +45,10 @@ uint16_t expPedalValues[50];
 boolean isListeningPedal;
 int32_t exprPin = 0; //Servo controlé par la pédale
 uint16_t prevExprValue = 0; //pour ne pas lire les valeurs quand la pédale ne bouge pas (mettre la pédale au max pour que ça fonctionne)
+uint16_t exprMin = 0;
+uint16_t exprMax = 937;
+int32_t mode = 0;
+
 
 void setup() {
   Serial.begin(9600);
@@ -66,7 +70,9 @@ void setup() {
 
 void loop() {
   
-  updateExpressionPedal();
+  if (mode){
+    updateExpressionPedal();
+  }
   
   //Test 1 :
   // Gestion via OSC avec le programme pure data
@@ -93,6 +99,14 @@ void loop() {
       Serial.print("Fixation des extremites servo ");Serial.print(servonum);Serial.print(" : "); Serial.print(myservos[servonum].valmin);Serial.print(" "); Serial.println(myservos[servonum].valmax);
     } else if (!strcmp(rcvMes->getZ_OSCAddress(), "/EXPR")){
       exprPin = rcvMes->getInteger32(0);
+    } else if (!strcmp(rcvMes->getZ_OSCAddress(), "/MIN")){
+      exprMin = analogRead(expressionPin);
+      Serial.print("min : ");Serial.println(exprMin);
+    } else if (!strcmp(rcvMes->getZ_OSCAddress(), "/MAX")){
+      exprMax = analogRead(expressionPin);
+      Serial.print("max : ");Serial.println(exprMax);
+    } else if (!strcmp(rcvMes->getZ_OSCAddress(), "/MODE")){
+      mode = rcvMes->getInteger32(0);
     }
   }
   
@@ -111,7 +125,7 @@ void loop() {
 
 
 void doExpressionPedal(uint16_t expVal){
-  myservos[exprPin].currvalue = map(expVal, 0, 937, myservos[exprPin].valmin, myservos[exprPin].valmax);
+  myservos[exprPin].currvalue = map(constrain(expVal, exprMin, exprMax), exprMin, exprMax, myservos[exprPin].valmin, myservos[exprPin].valmax);
   pwm.setPWM(servonum, 0, myservos[servonum].currvalue);
 }
 
@@ -136,8 +150,12 @@ void updateExpressionPedal(){
         isListeningPedal = true;
   }
   
-  if(isListeningPedal  && (expVal != prevExprValue))
-     doExpressionPedal(expVal);
+  if(isListeningPedal  && (expVal != prevExprValue)){
+    doExpressionPedal(expVal);
+    Serial.print("Expr value : ");Serial.println(expVal);
+  }
      
    prevExprValue = expVal;
 }
+
+
