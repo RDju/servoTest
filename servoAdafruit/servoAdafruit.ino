@@ -62,24 +62,25 @@ void setup() {
   server.sockOpen(myPort);
   
   for (uint8_t i = 0; i<3; i++){
-    myservos[i].valmin = 150;
-    myservos[i].valmax = 600;
+    myservos[i].valmin = 221;
+    myservos[i].valmax = 516;
     myservos[i].currvalue = (myservos[i].valmin + myservos[i].valmax) / 2;
   }
 }
 
 void loop() {
   
-  if (mode){
+  /*if (mode){
     updateExpressionPedal();
-  }
+  }*/
   
   //Test 1 :
   // Gestion via OSC avec le programme pure data
   if(server.available()){
+    
     server.availableFlush();
     rcvMes = server.getMessage();
-    
+        
     if(!strcmp(rcvMes->getZ_OSCAddress(), "/POS")){ //Déplacement d'un moteur entre le max et le min 
     
       servonum = rcvMes->getInteger32(1);
@@ -107,6 +108,8 @@ void loop() {
       Serial.print("max : ");Serial.println(exprMax);
     } else if (!strcmp(rcvMes->getZ_OSCAddress(), "/MODE")){
       mode = rcvMes->getInteger32(0);
+    } else if (!strcmp(rcvMes->getZ_OSCAddress(), "/INIT")){
+      Serial.println("youpi init");
     }
   }
   
@@ -126,7 +129,9 @@ void loop() {
 
 void doExpressionPedal(uint16_t expVal){
   myservos[exprPin].currvalue = map(constrain(expVal, exprMin, exprMax), exprMin, exprMax, myservos[exprPin].valmin, myservos[exprPin].valmax);
-  pwm.setPWM(servonum, 0, myservos[servonum].currvalue);
+  //pwm.setPWM(servonum, 0, myservos[servonum].currvalue);
+  pwm.setPWM(0, 0, myservos[servonum].currvalue);
+  pwm.setPWM(1, 0, myservos[servonum].currvalue);
 }
 
 void updateExpressionPedal(){
